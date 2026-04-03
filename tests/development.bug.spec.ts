@@ -10,7 +10,7 @@ test('Development test', async ({ page }) => {
 
   await page.waitForURL(/dashboard/);
 
-  //await expect(page.getByText('Development').first()).toHaveCount(1);
+  await expect(page.getByText('Development').first()).toHaveCount(1);
 
   await page.getByText('Development').first().click();
   await page.waitForURL('**https://app-dev.foundershub.ai/modules?type=development');

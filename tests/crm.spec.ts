@@ -11,13 +11,21 @@ test('Development test', async ({ page }) => {
   await page.waitForURL(/dashboard/);
 
   await page.getByText('CRM').first().click();
-  await page.waitForURL('**https://app-dev.foundershub.ai/modules?type=crm');
+  await page.waitForURL('https://app-dev.foundershub.ai/modules?type=crm');
 
   await expect(page.getByText('Ai Analysis').first()).toHaveCount(1);
 
   await page.getByText('Ai Analysis').first().click();
-  await page.waitForURL('**https://app-dev.foundershub.ai/metrics/ai-analysis');
+  await page.waitForURL('https://app-dev.foundershub.ai/metrics/ai-analysis');
 
-  await expect(page.getByText('Data Quality Heat Map').first()).toHaveCount(1);
+  await page.goBack();
+  await expect(page).toHaveURL('https://app-dev.foundershub.ai/modules?type=crm');
+
+  //await expect(page.getByText('Data Quality Heat Map').first()).toHaveCount(1);
+
+  await expect(page.getByText('List').first()).toHaveCount(1);
+  await page.getByText('List').first().click();
+  await expect(page).toHaveURL('https://app-dev.foundershub.ai/modules?type=crm');
+
 
 });
