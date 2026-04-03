@@ -7,10 +7,3 @@ test('Login test', async ({ page }) => {
   await page.locator('[placeholder="Enter your password"]').fill('Invest@92');
   await page.getByRole('button', { name: 'Sign in' }).click();
 });
-
-
-
-
-
-
-///npx playwright test tests/login.spec.ts --project=chromium --headed
