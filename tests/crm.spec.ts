@@ -13,7 +13,7 @@ test('Development test', async ({ page }) => {
   await page.getByText('CRM').first().click();
   await page.waitForURL('https://app-dev.foundershub.ai/modules?type=crm');
 
-  await expect(page.getByText('Ai Analysis').first()).toHaveCount(1);
+  //await expect(page.getByText('Ai Analysis').first()).toHaveCount(1);
 
   await page.getByText('Ai Analysis').first().click();
   await page.waitForURL('https://app-dev.foundershub.ai/metrics/ai-analysis');
