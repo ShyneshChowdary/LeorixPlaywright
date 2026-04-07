@@ -24,7 +24,7 @@ test('Development test', async ({ page }) => {
   await expect(page.getByText('Bug Tracker').first()).toHaveCount(1);
 
   await page.getByText('Bug Tracker').first().click();
-  await page.waitForURL('**/metrics/2e159a78-89f7-46d1-86be-ddb068173ff1/data')
+  await page.waitForURL('**https://app-dev.foundershub.ai/metrics/c810aabe-a032-435d-876f-73d12d3b274f/data')
 
   await page.goBack();
   await expect(page).toHaveURL('https://app-dev.foundershub.ai/modules?type=development');
