@@ -187,10 +187,10 @@ function printDuplicateTable(apiReports: PageApiReport[]) {
       console.log(`              Gaps: ${dup.gapMs.map(g => `${g}ms`).join(', ')}`);
 
       if (dup.severity === 'CRITICAL') {
-        console.log(`              ⚡ Gap < 50ms = likely React StrictMode double-render or missing dependency in useEffect`);
+        console.log(`⚡ Gap < 50ms = likely React StrictMode double-render or missing dependency in useEffect`);
         critical++;
       } else {
-        console.log(`              ⚠  Gap < 500ms = possible double useEffect / missing cache / re-mount`);
+        console.log(` ⚠  Gap < 500ms = possible double useEffect / missing cache / re-mount`);
         warnings++;
       }
     }
