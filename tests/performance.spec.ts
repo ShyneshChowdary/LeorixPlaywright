@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import 'dotenv/config';
 
 const SLOW = 3000;
 const FAIL = 8000;
@@ -23,7 +24,7 @@ test.describe('Performance + API Tests', () => {
 
     await page.goto('https://app-dev.foundershub.ai/login');
 
-    await page.fill('input[name="email"]', 'info@foundershub.ai');
+    await page.fill('input[name="email"]', 'info@foundershub.ai'); 
     await page.fill('input[name="password"]', 'Invest@92');
 
     const loginStart = Date.now();
