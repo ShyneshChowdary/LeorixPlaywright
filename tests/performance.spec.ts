@@ -72,7 +72,7 @@ test.describe('Performance + API Tests', () => {
         }
 
         if (!hasDuplicates) {
-          console.log(' No duplicate API calls');
+          console.log(' ✅ No duplicate API calls');
         }
 
       } catch (error) {
