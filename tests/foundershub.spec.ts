@@ -6,10 +6,7 @@ test.setTimeout(180_000);
 
 const BASE_URL = "https://app-dev.foundershub.ai";
 
-const CREDENTIALS = {
-  email: "info@foundershub.ai",
-  password: "Invest@92",
-};
+const CREDENTIALS = { email: "info@foundershub.ai",  password: "Invest@92", };
 
 const PAGES = [
   { name: "Dashboard",       url: "/dashboard" },
