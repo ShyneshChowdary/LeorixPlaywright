@@ -378,7 +378,7 @@ test.describe("FoundersHub — Performance & Duplicate API Suite", () => {
     const timings:    PageTimingResult[] = [];
     const apiResults: PageApiResult[]    = [];
 
-    console.log("\n🔐  Logging in to FoundersHub...");
+    console.log("\n Logging in to FoundersHub...");
     await performLogin(page);
     console.log("✅  Login successful\n");
 
