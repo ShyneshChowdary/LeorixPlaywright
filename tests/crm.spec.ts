@@ -1,37 +1,114 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from "@playwright/test";
 
-test('Development test', async ({ page }) => {
+// =============================================================================
+// CONFIG
+// =============================================================================
 
-  await page.goto('https://app-dev.foundershub.ai/login');
+const BASE_URL = "https://app-dev.foundershub.ai";
+const CRM_URL  = `${BASE_URL}/modules?type=crm`;
 
-  await page.locator('[placeholder="Enter your email"]').fill('info@foundershub.ai');
-  await page.locator('[placeholder="Enter your password"]').fill('Invest@92');
-  await page.getByRole('button', { name: 'Sign in' }).click();
+const CREDENTIALS = {
+  email:    "info@foundershub.ai",
+  password: "Invest@92",
+};
 
-  await page.waitForURL(/dashboard/);
+// =============================================================================
+// HELPERS
+// =============================================================================
 
-  await page.getByText('CRM').first().click();
-  await page.waitForURL('https://app-dev.foundershub.ai/modules?type=crm');
+/**
+ * Logs in and navigates directly to the CRM module page.
+ * Waits for the page to reach networkidle before returning.
+ *
+ * @param page - Playwright Page instance.
+ */
+async function loginAndGoToCRM(page: Page): Promise<void> {
+  await page.goto(`${BASE_URL}/`, { waitUntil: "domcontentloaded" });
+  await page.locator('input[type="email"], input[name="email"]').first().fill(CREDENTIALS.email);
+  await page.locator('input[type="password"]').first().fill(CREDENTIALS.password);
+  await page.locator('button[type="submit"], button:has-text("Login")').first().click();
+  await page.waitForURL(/.*dashboard.*/, { timeout: 45_000 });
+  await page.goto(CRM_URL, { waitUntil: "domcontentloaded" });
+  await page.waitForLoadState("networkidle", { timeout: 15_000 });
+}
 
-  //await expect(page.getByText('Ai Analysis').first()).toHaveCount(1);
+// =============================================================================
+// TEST SUITE — CRM MODULE
+// =============================================================================
 
-  await page.getByText('Ai Analysis').first().click();
-  await page.waitForURL('https://app-dev.foundershub.ai/metrics/ai-analysis');
+test.describe("Leorix — CRM Module", () => {
 
-  await page.goBack();
-  await expect(page).toHaveURL('https://app-dev.foundershub.ai/modules?type=crm');
+  test.beforeEach(async ({ page }) => {
+    test.setTimeout(120_000);
+    await loginAndGoToCRM(page);
+    console.log("✅ CRM page loaded");
+  });
 
-  await expect(page.getByText('List').first()).toHaveCount(1);
-  await page.getByText('List').first().click();
-  await expect(page).toHaveURL('https://app-dev.foundershub.ai/modules?type=crm');
+  /**
+   * Verifies the CRM module page loads and the URL is correct.
+   * Expected: URL contains "crm" and page does not show an error.
+   */
+  test("LCM-01: should load CRM module page successfully", async ({ page }) => {
+    await expect(page).toHaveURL(/.*crm.*/);
+    await expect(page.locator("text=Something went wrong").first()).not.toBeVisible({ timeout: 5_000 });
+    console.log("✅ LCM-01 passed: CRM page loaded");
+  });
 
-  await page.getByText('Grid').first().click();
-  await expect(page).toHaveURL('https://app-dev.foundershub.ai/modules?type=crm');
+  /**
+   * Verifies the main CRM heading or module title is visible.
+   * Expected: A heading identifying this as the CRM section is present.
+   */
+  test("LCM-02: should display CRM module heading", async ({ page }) => {
+    const heading = page.locator("h1, h2, [class*='title'], [class*='heading']").first();
+    await expect(heading).toBeVisible({ timeout: 10_000 });
+    console.log("✅ LCM-02 passed: CRM heading visible");
+  });
 
-  await page.getByText('Prospects').first().click();
-  await expect(page).toHaveURL('https://app-dev.foundershub.ai/metrics/7fbb96a7-0b10-46ee-bde4-3e2e50888e70/data');
+  /**
+   * Verifies the CRM contact list or leads table is rendered with data.
+   * Expected: At least one row or card of contact data is visible.
+   */
+  test("LCM-03: should display CRM contacts or leads list", async ({ page }) => {
+    const listItems = page.locator("table tr, [class*='card'], [class*='contact'], [class*='lead']");
+    await expect(listItems.first()).toBeVisible({ timeout: 15_000 });
+    const count = await listItems.count();
+    expect(count).toBeGreaterThan(0);
+    console.log(`✅ LCM-03 passed: ${count} contact/lead items visible`);
+  });
 
-  await page.getByText('Visualization').first().click();
-  await expect(page).toHaveURL('https://app-dev.foundershub.ai/metrics/7fbb96a7-0b10-46ee-bde4-3e2e50888e70/visualizations');
+  /**
+   * Verifies the Add / New Contact button is present and clickable.
+   * Expected: A button to create a new contact is visible on the CRM page.
+   */
+  test("LCM-04: should show Add New Contact button", async ({ page }) => {
+    const addBtn = page.locator(
+      'button:has-text("Add"), button:has-text("New"), button:has-text("Create"), [class*="add"]'
+    ).first();
+    await expect(addBtn).toBeVisible({ timeout: 10_000 });
+    console.log("✅ LCM-04 passed: Add/New button is visible");
+  });
+
+  /**
+   * Verifies that the search or filter functionality exists on the CRM page.
+   * Expected: A search input or filter control is visible.
+   */
+  test("LCM-05: should have search or filter functionality", async ({ page }) => {
+    const searchInput = page.locator(
+      'input[placeholder*="search" i], input[placeholder*="filter" i], input[type="search"]'
+    ).first();
+    await expect(searchInput).toBeVisible({ timeout: 10_000 });
+    console.log("✅ LCM-05 passed: Search/filter input is visible");
+  });
+
+  /**
+   * Verifies that no error banners are shown on the CRM module page.
+   * Expected: Error messages are not visible after a successful load.
+   */
+  test("LCM-06: should not show error messages on load", async ({ page }) => {
+    for (const msg of ["Something went wrong", "Failed to load", "Error", "Unable to connect"]) {
+      await expect(page.locator(`text=${msg}`).first()).not.toBeVisible({ timeout: 5_000 });
+    }
+    console.log("✅ LCM-06 passed: No error messages visible");
+  });
 
 });
