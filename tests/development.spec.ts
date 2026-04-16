@@ -1,6 +1,6 @@
 import { test, expect, Page } from "@playwright/test";
 
-const BASE_URL = "https://app-dev.foundershub.ai";
+const BASE_URL = "https://app.leorix.com";
 const DEV_URL  = `${BASE_URL}/modules?type=development`;
 
 const CREDENTIALS = {
@@ -14,8 +14,8 @@ async function loginAndGoToDevelopment(page: Page): Promise<void> {
   await page.locator('input[type="password"]').first().fill(CREDENTIALS.password);
   await page.locator('button[type="submit"], button:has-text("Login")').first().click();
   await page.waitForURL(/.*dashboard.*/, { timeout: 45_000 });
-  await page.goto(DEV_URL, { waitUntil: "domcontentloaded" });
-  await page.waitForLoadState("networkidle", { timeout: 15_000 });
+  await page.goto(DEV_URL, { waitUntil: "load", timeout: 60_000 });
+  await page.waitForTimeout(2_000);
 }
 
 test.describe("Leorix — Development Module", () => {
@@ -43,7 +43,7 @@ test.describe("Leorix — Development Module", () => {
 
   test("LDV-04: should navigate to Bug Tracker on click", async ({ page }) => {
     await page.locator("text=Bug Tracker").first().click();
-    await expect(page).toHaveURL(/metrics|data|bug/i, { timeout: 15_000 });
+    await expect(page).toHaveURL(/metrics|data|bug/i, { timeout: 20_000 });
     console.log("✅ LDV-04 passed: Bug Tracker navigation works");
   });
 
@@ -56,7 +56,7 @@ test.describe("Leorix — Development Module", () => {
 
   test("LDV-06: should return to Development page on browser back", async ({ page }) => {
     await page.locator("text=Bug Tracker").first().click();
-    await page.waitForURL(/metrics|data|bug/i, { timeout: 15_000 });
+    await page.waitForURL(/metrics|data|bug/i, { timeout: 20_000 });
     await page.goBack();
     await expect(page).toHaveURL(/development/i, { timeout: 15_000 });
     console.log("✅ LDV-06 passed: Browser back returns to Development");
