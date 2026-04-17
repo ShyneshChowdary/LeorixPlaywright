@@ -38,7 +38,7 @@ test.describe('Leorix Dashboard Page', () => {
     await expect(page.locator('text=10').first()).toBeVisible();   // Actual value
 
     await expect(page.locator('text=ACTIVE TEMPLATES').first()).toBeVisible();
-    await expect(page.locator('text=27').first()).toBeVisible();
+    await expect(page.locator('text=28').first()).toBeVisible();
 
     await expect(page.locator('text=Notifications').first()).toBeVisible();
     await expect(page.locator('text=4').first()).toBeVisible();   // 4 unread
