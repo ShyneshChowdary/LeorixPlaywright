@@ -28,7 +28,6 @@ async function loginAndGoTo(page: Page, targetUrl: string): Promise<void> {
   await page.waitForTimeout(2_000);
 }
 
-// ── Login & Logout ────────────────────────────────────────────────────────────
 
 test.describe('Leorix — Login & Logout', () => {
 
@@ -93,7 +92,6 @@ test.describe('Leorix — Login & Logout', () => {
 
 });
 
-// ── User Management ───────────────────────────────────────────────────────────
 
 test.describe('Leorix — User Management', () => {
 

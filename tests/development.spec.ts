@@ -74,7 +74,6 @@ test.describe('Leorix — Development Module', () => {
   });
 
   test('LDV-06: should show recent records / activity', async ({ page }) => {
-    // Look for table or recent records section (very reliable)
     const hasRecent = await Promise.any([
       page.locator('text=RECENT RECORDS').first().isVisible({ timeout: 10_000 }),
       page.locator('table').first().isVisible({ timeout: 10_000 }),

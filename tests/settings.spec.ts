@@ -20,7 +20,7 @@ async function loginAndGoTo(page: Page, targetUrl: string): Promise<void> {
   await page.waitForTimeout(2_000);
 }
 
-// ── Integrations ─────────────────────────────────────────────────────────────
+// Integrations Settings
 
 test.describe('Leorix — Integrations Settings', () => {
 
@@ -64,7 +64,7 @@ test.describe('Leorix — Integrations Settings', () => {
 
 });
 
-// ── Profile ───────────────────────────────────────────────────────────────────
+// Profile Settings
 
 test.describe("Leorix — Profile Settings", () => {
 
@@ -79,7 +79,6 @@ test.describe("Leorix — Profile Settings", () => {
   });
 
   test("LSP-02: should display logged-in user email in profile form", async ({ page }) => {
-    // More flexible selectors + extra wait
     await page.waitForTimeout(2000);
 
     const emailInput = page.locator('input[type="email"], input[name="email"], input[placeholder*="email" i]').first();
@@ -117,7 +116,7 @@ test.describe("Leorix — Profile Settings", () => {
   });
 });
 
-// ── Documents ─────────────────────────────────────────────────────────────────
+// Documents Settings
 
 test.describe("Leorix — Documents Settings", () => {
 
@@ -142,7 +141,7 @@ test.describe("Leorix — Documents Settings", () => {
   });
 
   test("LSD-04: should display document/quote template cards", async ({ page }) => {
-    await page.waitForTimeout(3000); // let cards load
+    await page.waitForTimeout(3000);
 
     const possibleSelectors = [
       'text=Enterprise Retainer Agreement',
@@ -162,7 +161,6 @@ test.describe("Leorix — Documents Settings", () => {
       }
     }
 
-    // Final fallback - count visible cards
     if (!isVisible) {
       const cardCount = await page.locator('div[class*="card"], article, [role="article"]').count();
       if (cardCount >= 3) isVisible = true;

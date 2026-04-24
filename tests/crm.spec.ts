@@ -94,7 +94,6 @@ test.describe('Leorix — CRM Module', () => {
     await page.locator('text=Prospects').first().click();
     await page.waitForTimeout(4_000);
 
-    // Check for any content that appears after clicking Prospects
     const hasContent = await Promise.any([
       page.locator('text=1,006').first().isVisible({ timeout: 8_000 }),
       page.locator('text=RECORDS').first().isVisible({ timeout: 8_000 }),

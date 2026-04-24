@@ -22,7 +22,7 @@ async function loginAndGoTo(page: Page, targetUrl: string): Promise<void> {
   console.log(`✅ Navigated to ${targetUrl}`);
 }
 
-// ── Workflows ─────────────────────────────────────────────────────────────────
+// Workflows 
 
 test.describe('Leorix — Workflows', () => {
 
@@ -61,7 +61,7 @@ test.describe('Leorix — Workflows', () => {
 
 });
 
-// ── Notifications ─────────────────────────────────────────────────────────────
+// Notifications 
 
 test.describe('Leorix — Notifications', () => {
 
@@ -99,7 +99,7 @@ test.describe('Leorix — Notifications', () => {
 
 });
 
-// ── Mailbox ───────────────────────────────────────────────────────────────────
+// Mailbox 
 
 test.describe('Leorix — Mailbox', () => {
 
@@ -138,7 +138,7 @@ test.describe('Leorix — Mailbox', () => {
 
 });
 
-// ── Pages ─────────────────────────────────────────────────────────────────────
+// Pages 
 
 test.describe('Leorix — Pages', () => {
 

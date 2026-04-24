@@ -7,7 +7,7 @@ const CREDENTIALS = {
   password: 'Invest@92',
 };
 
-// ==================== ROBUST LOGIN ====================
+// LOGIN AND DASHBOARD SETUP
 async function login(page: Page): Promise<void> {
   console.log('🔐 Logging in...');
   
@@ -62,7 +62,7 @@ test.describe('Leorix — Dashboard', () => {
     console.log('✅ LD-04 passed');
   });
 
-  // ====================== USER MANAGEMENT ======================
+  // USER MANAGEMENT TESTS
   test('LUM-01: should load User Management page', async ({ page }) => {
     await page.goto(`${BASE_URL}/admin/users`, { waitUntil: 'domcontentloaded' });
     await expect(page).toHaveURL(/.*admin.*users.*/i, { timeout: 25_000 });
@@ -78,7 +78,7 @@ test.describe('Leorix — Dashboard', () => {
 
   test('LUM-03: should show logged-in user in list', async ({ page }) => {
     await page.goto(`${BASE_URL}/admin/users`, { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(3000); // extra time for table to load
+    await page.waitForTimeout(3000);
 
     const possibleSelectors = [
       'text=info@foundershub.ai',
@@ -98,10 +98,9 @@ test.describe('Leorix — Dashboard', () => {
       }
     }
 
-    // Final strong fallback
     if (!found) {
       const rowCount = await page.locator("table tr").count();
-      if (rowCount > 3) found = true; // at least some users are shown
+      if (rowCount > 3) found = true;
     }
 
     expect(found).toBe(true);
@@ -109,7 +108,7 @@ test.describe('Leorix — Dashboard', () => {
   });
 });
 
-// ====================== NEGATIVE LOGIN TESTS ======================
+//NEGATIVE LOGIN TESTS
 test.describe('Leorix — Login Negative Cases', () => {
 
   test('LLL-02: invalid credentials should not login', async ({ page }) => {
